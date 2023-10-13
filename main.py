@@ -185,6 +185,22 @@ def crack_password_random_selection(password:str, characters_to_use:str, max_tim
 
     return bool_return, password, stop_time - start_time, counter
 
+def results(found:bool, password:str, time:float, guess_count:int):
+    '''
+    prints results to log and screen
+
+    :param bool found: flag if password is cracked
+    :param str password: password trying to crack
+    :param int guess_count: number of guesses to crack password
+    :return: None
+    '''
+    if found:
+        logger.info(f'found password -> {password} in {time:5f} seconds used {guess_count:,} guesses')
+    else:
+        logger.error(f'did not find password -> {password} in {time:5f} seconds used {guess_count:,} guesses')    
+    
+    return None
+
 '''
 main function
 '''
@@ -208,6 +224,9 @@ def main():
         characters_to_use = characters_to_use
     )
 
+    # print results
+    results(found = found, password = found_password, time = time_to_crack, guess_count = guess_count)
+
     # crack password through random guessing
     found, found_password, time_to_crack, guess_count = crack_password_random_selection(
         password = '12',
@@ -215,10 +234,8 @@ def main():
         max_time = 1
     )
 
-    if found:
-        logger.info(f'found password -> {found_password} in {time_to_crack:5f} seconds used {guess_count:,} guesses')
-    else:
-        logger.error(f'did not find password -> {found_password} in {time_to_crack:5f} seconds used {guess_count:,} guesses')
+    # print results
+    results(found = found, password = found_password, time = time_to_crack, guess_count = guess_count)
 
     return None
 
